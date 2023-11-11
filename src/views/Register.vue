@@ -7,10 +7,15 @@
 
       <v-row justify="center">
         <v-col cols="12" md="8" lg="6">
-          <register-form
-            @submit-succes="registerFormSubmitSuccess"
-          ></register-form>
-          <ConfirmAccount/>
+          <transition name="slide" mode="out-in">
+            <register-form
+              @submit-success="registerFormSubmitSuccess"
+              v-if="registerState == 'form'"
+            ></register-form>
+          </transition>
+          <transition name="slide" mode="out-in">
+            <ConfirmAccount v-if="registerState == 'confirmPending'" />
+          </transition>
         </v-col>
       </v-row>
     </v-responsive>
@@ -19,14 +24,29 @@
 
 <script setup lang="ts">
 import RegisterForm from "@/components/Auth/Register/RegisterForm.vue";
+import ConfirmAccount from "@/components/Auth/ConfirmAccount.vue";
 import { onMounted } from "vue";
 import { ref, Ref } from "vue";
+
 const registerState: Ref<string> = ref("form");
 
 onMounted(() => {
   registerState.value = "form";
 });
+
 const registerFormSubmitSuccess = () => {
   registerState.value = "confirmPending";
 };
 </script>
+
+<style scoped lang="scss">
+.slide-enter-active,
+.slide-leave-active {
+  transition: transform 0.5s;
+}
+
+.slide-enter,
+.slide-leave-to {
+  transform: translateX(100%);
+}
+</style>

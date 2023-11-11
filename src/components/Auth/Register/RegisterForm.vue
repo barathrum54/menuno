@@ -53,9 +53,11 @@ const rules = {
     value === password.value || "Passwords do not match",
 };
 
-const email: Ref<string> = ref("");
-const password: Ref<string> = ref("");
-const repeatPassword: Ref<string> = ref("");
+const emit = defineEmits(["submitSuccess"]);
+
+const email: Ref<string> = ref("tahabdurmus0@gmail.com");
+const password: Ref<string> = ref("232323");
+const repeatPassword: Ref<string> = ref("232323");
 const isLoading: Ref<boolean> = ref(false);
 
 const handleSubmit = (): void => {
@@ -63,6 +65,7 @@ const handleSubmit = (): void => {
   setTimeout(() => {
     isLoading.value = false;
     console.log("API request successful");
+    emit("submitSuccess");
   }, 2000);
 };
 </script>
